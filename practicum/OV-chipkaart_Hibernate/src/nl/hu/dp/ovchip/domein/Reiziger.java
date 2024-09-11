@@ -1,8 +1,7 @@
 package nl.hu.dp.ovchip.domein;
-
-
 import javax.persistence.*;
 import java.sql.Date;
+
 @Entity(name = "Reiziger")
 @Table(name = "Reiziger")
 public class Reiziger {
@@ -13,6 +12,7 @@ public class Reiziger {
     private String tussenvoegsel;
     private String achternaam;
     private Date geboortedatum;
+
     @OneToOne(
             mappedBy = "Reiziger",
             cascade = CascadeType.ALL,

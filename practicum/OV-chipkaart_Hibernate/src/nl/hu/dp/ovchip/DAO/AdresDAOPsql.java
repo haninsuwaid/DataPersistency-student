@@ -1,5 +1,4 @@
 package nl.hu.dp.ovchip.DAO;
-
 import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.Reiziger;
 
@@ -117,7 +116,6 @@ public class AdresDAOPsql implements AdresDAO {
                 adres.setHuisnummer(huisnummer);
                 adres.setWoonplaats(woonplaats);
                 adressen.add(adres);
-
             }
             return adressen;
         } catch (SQLException throwables) {
