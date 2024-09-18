@@ -6,7 +6,6 @@ import java.sql.Date;
 @Table(name = "reiziger")
 public class Reiziger {
     @Id
-    @GeneratedValue
     @Column(name = "reiziger_id")
     private int id;
 

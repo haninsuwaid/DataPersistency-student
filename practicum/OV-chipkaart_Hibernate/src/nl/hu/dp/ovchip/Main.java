@@ -7,6 +7,7 @@ import nl.hu.dp.ovchip.domein.Reiziger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.List;
 
 public class Main {
@@ -40,6 +41,46 @@ public class Main {
         }
         System.out.println();
 
+        Reiziger reiziger = rdao.findById(4);
+        System.out.println("[Test] ReizigerDAO.findById() geeft de volgende reiziger:");
+        System.out.println(reiziger);
+        System.out.println();
+
+        // Maak een nieuwe reiziger aan en persisteer deze in de database
+        String gbdatum = "1981-03-14";
+        Reiziger sietske = new Reiziger(78, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
+        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
+        rdao.save(sietske);
+        reizigers = rdao.findAll();
+        System.out.println(reizigers.size() + " reizigers\n");
+        System.out.println();
+
+        // test gebruiker/s vinden bij geboorte datum
+        System.out.println("[Test] ReizigerDAO.findByGbdatum() geeft de volgende reizigers:");
+        Date geboorteDatum = new Date(102, 11, 3);
+        List<Reiziger> geboorteDatumReizigers = rdao.findByGbdatum(geboorteDatum);
+        for (Reiziger r : geboorteDatumReizigers) {
+            System.out.println(r);
+        }
+        System.out.println();
+
+
+        // test gebruiker aanpassen
+        System.out.println("[Test] ReizigerDAO.update() doet het volgende:");
+        System.out.println("Reiziger voor het aanpassen van de gegevens " + reiziger);
+        reiziger.setAchternaam("vander");
+        reiziger.setVoorletters("H");
+        rdao.update(reiziger);
+        System.out.println("Reiziger na het aanpassen van de gegevens " + reiziger);
+        System.out.println();
+
+
+        // test gebruiker uit db verwijderen
+        System.out.println("[Test] ReizigerDAO.delete():");
+        rdao.delete(sietske);
+        reizigers = rdao.findAll();
+        System.out.println(reizigers.size() + " reizigers\n");
+        System.out.println();
     }
 
     public static void main(String[] args) throws SQLException {

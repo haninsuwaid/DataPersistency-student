@@ -20,17 +20,50 @@ public class ReizigerDAOHibernate implements ReizigerDAO  {
 
     @Override
     public boolean save(Reiziger reiziger) {
-        return false;
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        try (session) {
+            session.save(reiziger);
+            tx.commit();
+            return true;
+        } catch (Exception e){
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public boolean update(Reiziger reiziger) {
-        return false;
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        try (session) {
+            session.update(reiziger);
+            tx.commit();
+            return true;
+        } catch (Exception e){
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public boolean delete(Reiziger reiziger) {
-        return false;
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        try (session) {
+            session.delete(reiziger);
+            tx.commit();
+            return true;
+        } catch (Exception e){
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
@@ -53,11 +86,37 @@ public class ReizigerDAOHibernate implements ReizigerDAO  {
 
     @Override
     public Reiziger findById(int id) {
-        return null;
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        try (session) {
+            String hql = "FROM Reiziger r WHERE r.id = :id";
+            Query<Reiziger> query = session.createQuery(hql, Reiziger.class);
+            query.setParameter("id", id);
+            tx.commit();
+            return query.uniqueResult();
+        } catch (Exception e){
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public List<Reiziger> findByGbdatum(Date datum) {
-        return List.of();
+        Session session = sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        try (session) {
+            String hql = "FROM Reiziger WHERE geboortedatum = :datum";
+            Query<Reiziger> query = session.createQuery(hql, Reiziger.class);
+            query.setParameter("datum", datum);
+            tx.commit();
+            return query.list();
+        } catch (Exception e){
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 }
