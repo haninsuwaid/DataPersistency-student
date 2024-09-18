@@ -8,9 +8,17 @@ public class Adres {
     @Id
     @GeneratedValue
     private int id;
+
+    @Column(name = "postcode")
     private String postcode;
+
+    @Column(name = "huisnummer")
     private String huisnummer;
+
+    @Column(name = "straat")
     private String straat;
+
+    @Column(name = "woonplaats")
     private String woonplaats;
 
     @OneToOne(fetch = FetchType.LAZY)

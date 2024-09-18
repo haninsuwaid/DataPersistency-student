@@ -2,24 +2,34 @@ package nl.hu.dp.ovchip.domein;
 import javax.persistence.*;
 import java.sql.Date;
 
-@Entity(name = "Reiziger")
-@Table(name = "Reiziger")
+@Entity
+@Table(name = "reiziger")
 public class Reiziger {
     @Id
     @GeneratedValue
+    @Column(name = "reiziger_id")
     private int id;
+
+    @Column(name = "voorletters")
     private String voorletters;
+
+    @Column(name = "tussenvoegsel")
     private String tussenvoegsel;
+
+    @Column(name = "achternaam")
     private String achternaam;
+
+    @Column(name = "geboortedatum")
     private Date geboortedatum;
 
-    @OneToOne(
-            mappedBy = "Reiziger",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private Adres adres;
+//    voor opdracht p3h
+//    @OneToOne(
+//            mappedBy = "Reiziger",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true,
+//            fetch = FetchType.LAZY
+//    )
+//    private Adres adres;
 
     public Reiziger() {}
 
@@ -81,11 +91,10 @@ public class Reiziger {
     }
 
     public String toString() {
-        return "Reiziger" +
-                "id= " + id +
-                ", voorletters= '" + voorletters + '\'' +
-                ", tussenvoegsel= '" + tussenvoegsel + '\'' +
-                ", achternaam= '" + achternaam + '\'' +
-                ", geboortedatum= " + geboortedatum;
+        return "Reiziger {#" + id +
+                " " + voorletters + ". " +
+                tussenvoegsel + " "+
+                achternaam + '\'' +
+                ", geb. " + geboortedatum + "}";
     }
 }
