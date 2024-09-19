@@ -73,11 +73,12 @@ public class AdresDAOHibernate implements AdresDAO {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         try (session) {
-            String hql = "FROM Reiziger r WHERE r.id = :id";
+            String hql = "FROM Adres a WHERE a.reiziger.id = :id";
             Query<Adres> query = session.createQuery(hql, Adres.class);
             query.setParameter("id", reiziger.getId());
+            Adres adres = query.uniqueResult();
             tx.commit();
-            return query.uniqueResult();
+            return adres;
         } catch (Exception e){
             tx.rollback();
             throw e;

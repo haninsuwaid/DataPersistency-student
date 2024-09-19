@@ -33,7 +33,7 @@ public class Main {
  *
  * @throws SQLException
  */
-    private static void testReizigerDAO (ReizigerDAO rdao) throws SQLException {
+    private static void testReizigerDAO (ReizigerDAO rdao, AdresDAO adao) throws SQLException {
 //        System.out.println("\n---------- Test ReizigerDAO -------------");
 
         // Haal alle reizigers op uit de database
@@ -80,60 +80,54 @@ public class Main {
 
         // test gebruiker uit db verwijderen
         System.out.println("[Test] ReizigerDAO.delete():");
-        rdao.delete(sietske);
+//        rdao.delete(sietske);
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
         System.out.println();
 
-//        System.out.println("[Test] AdresDAO.findAll() geeft de volgende Adressen:");
-//        List<Adres> adressen = adao.findAll();
-//        for (Adres a : adressen) {
-//            System.out.println(a);
-//        }
-//        System.out.println();
-
-
-//        System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende reizigers en adressen:");
-//        for (Reiziger r : reizigers) {
-//            System.out.println(r + " " + adao.findByReiziger(r));
-//        }
-//        System.out.println();
-
+        System.out.println("[Test] AdresDAO.findAll() geeft de volgende Adressen:");
+        List<Adres> adressen = adao.findAll();
+        for (Adres a : adressen) {
+            System.out.println(a);
+        }
+        System.out.println();
 
         Reiziger newReiziger = new Reiziger(44, "H", "", "Suwaid", java.sql.Date.valueOf(gbdatum));
 //        rdao.save(newReiziger);
 
-//        Adres newAdres = new Adres();
-//        newAdres.setHuisnummer("22");
-//        newAdres.setPostcode("1122pp");
-//        newAdres.setWoonplaats("Leiden");
-//        newAdres.setStraat("Lelijkebenen");
-//        newAdres.setId(88);
-//        newAdres.setReiziger(newReiziger);
-//
+        Adres newAdres = new Adres();
+        newAdres.setHuisnummer("22");
+        newAdres.setPostcode("1122pp");
+        newAdres.setWoonplaats("Leiden");
+        newAdres.setStraat("Lelijkebenen");
+        newAdres.setId(88);
+        newAdres.setReiziger(newReiziger);
 //        adao.save(newAdres);
-//        System.out.println(newReiziger + " " + adao.findByReiziger(newReiziger));
-//        System.out.println();
-//
-//
-//        System.out.println("[Test] AdresDAO.update() doet het volgende:");
-//        System.out.println("Adres aanpassen ");
-//        newAdres.setHuisnummer("33");
-//        adao.update(newAdres);
-//        System.out.println("Adres na het aanpassen van de gegevens " + newReiziger + " " + newAdres);
-//        System.out.println();
-//
-//
-//        System.out.println("[Test] ReizigerDAO.delete():");
-//        adao.delete(newAdres);
-//        adressen = adao.findAll();
-//        System.out.println(adressen.size() + " aantal adressen na het verwijderen\n");
-//        System.out.println();
+
+        System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende reiziger en adres:");
+        System.out.println(newReiziger + " " + adao.findByReiziger(newReiziger));
+        System.out.println();
+
+        System.out.println("[Test] AdresDAO.update() doet het volgende:");
+        System.out.println("Adres aanpassen ");
+        newAdres.setHuisnummer("8");
+        adao.update(newAdres);
+        System.out.println("Adres na het aanpassen van de gegevens " + newReiziger + " " + newAdres);
+        System.out.println();
+
+
+        System.out.println("[Test] ReizigerDAO.delete():");
+        System.out.println(adressen.size() + " aantal adressen voor het verwijderen\n");
+        adao.delete(newAdres);
+        adressen = adao.findAll();
+        System.out.println(adressen.size() + " aantal adressen na het verwijderen\n");
+        System.out.println();
+
     }
 
     public static void main(String[] args) throws SQLException {
         ReizigerDAO rdao = new ReizigerDAOHibernate(sessionFactory);
-//        AdresDAO adao = new AdresDAOHibernate(sessionFactory);
-        testReizigerDAO(rdao);
+        AdresDAO adao = new AdresDAOHibernate(sessionFactory);
+        testReizigerDAO(rdao, adao);
     }
 }
