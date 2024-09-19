@@ -2,7 +2,7 @@ package nl.hu.dp.ovchip.domein;
 import javax.persistence.*;
 import java.sql.Date;
 
-@Entity
+@Entity(name = "reiziger")
 @Table(name = "reiziger")
 public class Reiziger {
     @Id
@@ -22,13 +22,12 @@ public class Reiziger {
     private Date geboortedatum;
 
 //    voor opdracht p3h
-//    @OneToOne(
-//            mappedBy = "Reiziger",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true,
-//            fetch = FetchType.LAZY
-//    )
-//    private Adres adres;
+    @OneToOne(
+            mappedBy = "Reiziger",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Adres adres;
 
     public Reiziger() {}
 
@@ -93,7 +92,7 @@ public class Reiziger {
         return "Reiziger {#" + id +
                 " " + voorletters + ". " +
                 tussenvoegsel + " "+
-                achternaam + '\'' +
+                achternaam + " " +
                 ", geb. " + geboortedatum + "}";
     }
 }

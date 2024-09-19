@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "Adres")
 public class Adres {
     @Id
-    @GeneratedValue
+    @Column(name = "adres_id")
     private int id;
 
     @Column(name = "postcode")
@@ -22,9 +22,18 @@ public class Adres {
     private String woonplaats;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
 
     public Adres() {
+    }
+
+    public Reiziger getReiziger() {
+        return reiziger;
+    }
+
+    public void setReiziger(Reiziger reiziger) {
+        this.reiziger = reiziger;
     }
 
     public int getId() {
