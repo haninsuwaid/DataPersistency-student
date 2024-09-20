@@ -1,10 +1,18 @@
 package nl.hu.dp.ovchip.DAO;
 
+import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.Reiziger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.beans.Expression;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -66,15 +74,17 @@ public class ReizigerDAOHibernate implements ReizigerDAO  {
         }
     }
 
+    
     @Override
     public List<Reiziger> findAll() {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         try (session) {
-            String hql = "FROM Reiziger";
-            Query<Reiziger> query = session.createQuery(hql, Reiziger.class);
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Reiziger> query = builder.createQuery(Reiziger.class);
+            query.select(query.from(Reiziger.class));
             tx.commit();
-            return query.list();
+            return session.createQuery(query).getResultList();
         } catch (Exception e){
             tx.rollback();
             throw e;
@@ -89,11 +99,9 @@ public class ReizigerDAOHibernate implements ReizigerDAO  {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         try (session) {
-            String hql = "FROM Reiziger r WHERE r.id = :id";
-            Query<Reiziger> query = session.createQuery(hql, Reiziger.class);
-            query.setParameter("id", id);
+            Reiziger reiziger = session.get(Reiziger.class, id);
             tx.commit();
-            return query.uniqueResult();
+            return reiziger;
         } catch (Exception e){
             tx.rollback();
             throw e;
@@ -107,11 +115,12 @@ public class ReizigerDAOHibernate implements ReizigerDAO  {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         try (session) {
-            String hql = "FROM Reiziger WHERE geboortedatum = :datum";
-            Query<Reiziger> query = session.createQuery(hql, Reiziger.class);
-            query.setParameter("datum", datum);
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Reiziger> query = cb.createQuery(Reiziger.class);
+            Root<Reiziger> root = query.from(Reiziger.class);
+            query.where(cb.equal(root.get("geboortedatum"), datum));
             tx.commit();
-            return query.list();
+            return session.createQuery(query).getResultList();
         } catch (Exception e){
             tx.rollback();
             throw e;

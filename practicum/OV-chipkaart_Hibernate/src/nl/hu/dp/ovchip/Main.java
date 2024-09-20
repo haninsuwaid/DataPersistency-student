@@ -102,7 +102,7 @@ public class Main {
         newAdres.setStraat("Lelijkebenen");
         newAdres.setId(88);
         newAdres.setReiziger(newReiziger);
-//        adao.save(newAdres);
+        adao.save(newAdres);
 
         System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende reiziger en adres:");
         System.out.println(newReiziger + " " + adao.findByReiziger(newReiziger));
