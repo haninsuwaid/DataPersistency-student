@@ -1,6 +1,8 @@
 package nl.hu.dp.ovchip.domein;
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reiziger")
@@ -28,6 +30,13 @@ public class Reiziger {
             orphanRemoval = true
     )
     private Adres adres;
+
+    @OneToMany(
+            mappedBy = "reiziger",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<OVChipkaart> ovChipkaartList = new ArrayList<>();
 
     public Adres getAdres() {
         return adres;
