@@ -127,12 +127,12 @@ public class Main {
         OVChipkaart ovChipkaartTest = new OVChipkaart(45, java.sql.Date.valueOf(geldigTot), 2, 5.00, reizigerforOvChipKaartTest);
 //        ovdao.save(ovChipkaartTest);
 
-        System.out.println("[Test] OvChipKaartDAO.findAll() geeft de volgende Ovs:");
-        List<OVChipkaart> kaarten = ovdao.findAll();
-        for (OVChipkaart k : kaarten) {
-            System.out.println(k);
-        }
-        System.out.println();
+//        System.out.println("[Test] OvChipKaartDAO.findAll() geeft de volgende Ovs:");
+//        List<OVChipkaart> kaarten = ovdao.findAll();
+//        for (OVChipkaart k : kaarten) {
+//            System.out.println(k);
+//        }
+//        System.out.println();
 
 //        System.out.println("[Test] OvChipKaartDAO.update() doet het volgende: \n");
 //        System.out.println("OvChipKaart aanpassen \n");

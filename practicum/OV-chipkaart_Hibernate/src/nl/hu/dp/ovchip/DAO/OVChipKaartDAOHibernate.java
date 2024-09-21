@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -68,13 +69,16 @@ public class OVChipKaartDAOHibernate implements OVChipKaartDAO {
     }
 
     @Override
-    public OVChipkaart findByReiziger(Reiziger reiziger) {
+    public List<OVChipkaart> findByReiziger(Reiziger reiziger) {
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         try (session) {
-            OVChipkaart ovChipkaart = session.get(OVChipkaart.class, reiziger.getId());
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<OVChipkaart> query = cb.createQuery(OVChipkaart.class);
+            Root<OVChipkaart> root = query.from(OVChipkaart.class);
+            query.where(cb.equal(root.get("reiziger"), reiziger.getId()));
             tx.commit();
-            return ovChipkaart;
+            return session.createQuery(query).getResultList();
         } catch (Exception e){
             tx.rollback();
             throw e;
