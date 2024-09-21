@@ -34,9 +34,10 @@ public class Reiziger {
     @OneToMany(
             mappedBy = "reiziger",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
     )
-    private List<OVChipkaart> ovChipkaartList = new ArrayList<>();
+    private List<OVChipkaart> OVChipkaart = new ArrayList<>();
 
     public Adres getAdres() {
         return adres;

@@ -2,16 +2,11 @@ package nl.hu.dp.ovchip.DAO;
 
 import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.Reiziger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 

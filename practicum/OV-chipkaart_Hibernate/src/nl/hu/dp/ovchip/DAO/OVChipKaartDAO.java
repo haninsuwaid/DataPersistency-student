@@ -10,6 +10,6 @@ public interface OVChipKaartDAO {
     boolean save(OVChipkaart ovchipkaart);
     boolean update(OVChipkaart ovchipkaart);
     boolean delete(OVChipkaart ovchipkaart);
-    Adres findByReiziger(Reiziger reiziger);
-    List<Adres> findAll();
+    OVChipkaart findByReiziger(Reiziger reiziger);
+    List<OVChipkaart> findAll();
 }

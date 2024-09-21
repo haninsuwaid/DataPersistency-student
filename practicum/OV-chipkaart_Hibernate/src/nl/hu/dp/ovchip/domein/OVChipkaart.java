@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.Date;
 
 @Entity
-@Table(name = "OV_Chipkaart")
+@Table(name = "OVChipkaart")
 public class OVChipkaart {
     @Id
     @Column(name = "kaart_nummer")
@@ -20,7 +20,7 @@ public class OVChipkaart {
     @Column(name = "saldo")
     private double saldo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
 
@@ -34,6 +34,26 @@ public class OVChipkaart {
 
     public OVChipkaart() {
 
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGeldig_tot(Date geldig_tot) {
+        this.geldig_tot = geldig_tot;
+    }
+
+    public void setKlasse(int klasse) {
+        this.klasse = klasse;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public void setReiziger(Reiziger reiziger) {
+        this.reiziger = reiziger;
     }
 
     @Override
