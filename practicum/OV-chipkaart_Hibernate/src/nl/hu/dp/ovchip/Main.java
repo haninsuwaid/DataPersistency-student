@@ -51,6 +51,7 @@ public class Main {
         Reiziger sietske = new Reiziger(78, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
 //        rdao.save(sietske);
+
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
         System.out.println();
@@ -68,8 +69,8 @@ public class Main {
         // test gebruiker aanpassen
         System.out.println("[Test] ReizigerDAO.update() doet het volgende:");
         System.out.println("Reiziger voor het aanpassen van de gegevens " + reiziger);
-        reiziger.setAchternaam("van der");
-        reiziger.setVoorletters("W");
+        reiziger.setAchternaam("Kaas");
+        reiziger.setVoorletters("K");
         rdao.update(reiziger);
         System.out.println("Reiziger na het aanpassen van de gegevens " + reiziger);
         System.out.println();
@@ -77,7 +78,7 @@ public class Main {
 
         //test gebruiker uit db verwijderen
         System.out.println("[Test] ReizigerDAO.delete():");
-//        rdao.delete(sietske);
+        rdao.delete(sietske);
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
         System.out.println();
@@ -91,7 +92,7 @@ public class Main {
      *
      * @throws SQLException
      */
-    private static void testAdresDAO (AdresDAO adao) throws SQLException {
+    private static void testAdresDAO (AdresDAO adao, ReizigerDAO rdao) throws SQLException {
 
         System.out.println("\n---------- Test AdresDAO -------------");
         System.out.println("[Test] AdresDAO.findAll() geeft de volgende Adressen:");
@@ -101,7 +102,7 @@ public class Main {
         }
         System.out.println();
         Reiziger newReiziger = new Reiziger(44, "H", "", "Suwaid", java.sql.Date.valueOf(gbdatum));
-//        rdao.save(newReiziger);
+        rdao.save(newReiziger);
         Adres newAdres = new Adres();
         newAdres.setHuisnummer("22");
         newAdres.setPostcode("1122pp");
@@ -117,7 +118,7 @@ public class Main {
 
         System.out.println("[Test] AdresDAO.update() doet het volgende:");
         System.out.println("Adres aanpassen ");
-        newAdres.setHuisnummer("8");
+        newAdres.setHuisnummer("10");
         adao.update(newAdres);
         System.out.println("Adres na het aanpassen van de gegevens " + newReiziger + " " + newAdres);
         System.out.println();
@@ -138,7 +139,7 @@ public class Main {
      *
      * @throws SQLException
      */
-    private static void testOvChipKaartDAO (OVChipKaartDAO ovdao) throws SQLException {
+    private static void testOvChipKaartDAO (OVChipKaartDAO ovdao, ReizigerDAO rdao) throws SQLException {
         System.out.println("\n---------- Test OvChipKaartDAO -------------");
         Reiziger reizigerforOvChipKaartTest = new Reiziger(45, "L", "", "Momo", java.sql.Date.valueOf(gbdatum));
 //        rdao.save(reizigerforOvChipKaartTest);
@@ -164,13 +165,13 @@ public class Main {
         OVChipkaart ovChipkaartTest1 = new OVChipkaart(46, java.sql.Date.valueOf(geldigTot), 2, 7.00, reizigerforOvChipKaartTest);
 //        ovdao.save(ovChipkaartTest1);
         OVChipkaart ovChipkaartTest2 = new OVChipkaart(47, java.sql.Date.valueOf(geldigTot), 2, 9.00, reizigerforOvChipKaartTest);
-//        ovdao.save(ovChipkaartTest2);
+        ovdao.save(ovChipkaartTest2);
         OVChipkaart ovChipkaartTest3 = new OVChipkaart(48, java.sql.Date.valueOf(geldigTot), 2, 10.00, reizigerforOvChipKaartTest);
 //        ovdao.save(ovChipkaartTest3);
 
         System.out.println("[Test] OvChipKaartDAO.delete():");
         System.out.println(kaarten.size() + " aantal ovkaarten voor het verwijderen\n");
-        ovdao.delete(ovChipkaartTest2);
+//        ovdao.delete(ovChipkaartTest2);
         kaarten = ovdao.findAll();
         System.out.println(kaarten.size() + " aantal ovkaarten na het verwijderen\n");
         System.out.println();
@@ -184,8 +185,8 @@ public class Main {
         ReizigerDAO rdao = new ReizigerDAOHibernate(sessionFactory);
         AdresDAO adao = new AdresDAOHibernate(sessionFactory);
         OVChipKaartDAO ovdao = new OVChipKaartDAOHibernate(sessionFactory);
-        testReizigerDAO(rdao);
-        testAdresDAO(adao);
-        testOvChipKaartDAO(ovdao);
+//        testReizigerDAO(rdao);
+//        testAdresDAO(adao, rdao);
+        testOvChipKaartDAO(ovdao, rdao);
     }
 }
