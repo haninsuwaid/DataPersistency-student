@@ -34,6 +34,7 @@ public class Main {
     private static void testReizigerDAO (ReizigerDAO rdao) throws SQLException {
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
+        Reiziger sietske = new Reiziger(78, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         // Haal alle reizigers op uit de database
         List<Reiziger> reizigers = rdao.findAll();
         System.out.println("[Test] ReizigerDAO.findAll() geeft de volgende reizigers:");
@@ -47,13 +48,7 @@ public class Main {
         System.out.println(reiziger);
         System.out.println();
 
-        // Maak een nieuwe reiziger aan en persisteer deze in de database
-        Reiziger sietske = new Reiziger(78, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
-        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
-//        rdao.save(sietske);
-
         reizigers = rdao.findAll();
-        System.out.println(reizigers.size() + " reizigers\n");
         System.out.println();
 
         // test gebruiker/s vinden bij geboorte datum
@@ -78,10 +73,18 @@ public class Main {
 
         //test gebruiker uit db verwijderen
         System.out.println("[Test] ReizigerDAO.delete():");
+        System.out.println(reizigers.size() + " reizigers\n");
         rdao.delete(sietske);
+
         reizigers = rdao.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
         System.out.println();
+
+        // Maak een nieuwe reiziger aan en persisteer deze in de database
+        System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
+        rdao.save(sietske);
+        reizigers = rdao.findAll();
+        System.out.println(reizigers.size() + " reizigers\n");
 
     }
 
@@ -102,7 +105,7 @@ public class Main {
         }
         System.out.println();
         Reiziger newReiziger = new Reiziger(44, "H", "", "Suwaid", java.sql.Date.valueOf(gbdatum));
-        rdao.save(newReiziger);
+//        rdao.save(newReiziger);
         Adres newAdres = new Adres();
         newAdres.setHuisnummer("22");
         newAdres.setPostcode("1122pp");
@@ -110,7 +113,6 @@ public class Main {
         newAdres.setStraat("Lelijkebenen");
         newAdres.setId(88);
         newAdres.setReiziger(newReiziger);
-        adao.save(newAdres);
 
         System.out.println("[Test] AdresDAO.findByReiziger() geeft de volgende reiziger en adres:");
         System.out.println(newReiziger + " " + adao.findByReiziger(newReiziger));
@@ -130,6 +132,8 @@ public class Main {
         adressen = adao.findAll();
         System.out.println(adressen.size() + " aantal adressen na het verwijderen\n");
         System.out.println();
+
+        adao.save(newAdres);
     }
 
     /**
@@ -142,10 +146,10 @@ public class Main {
     private static void testOvChipKaartDAO (OVChipKaartDAO ovdao, ReizigerDAO rdao) throws SQLException {
         System.out.println("\n---------- Test OvChipKaartDAO -------------");
         Reiziger reizigerforOvChipKaartTest = new Reiziger(45, "L", "", "Momo", java.sql.Date.valueOf(gbdatum));
-//        rdao.save(reizigerforOvChipKaartTest);
+
         String geldigTot = "2025-03-14";
         OVChipkaart ovChipkaartTest = new OVChipkaart(45, java.sql.Date.valueOf(geldigTot), 2, 5.00, reizigerforOvChipKaartTest);
-//        ovdao.save(ovChipkaartTest);
+
 
         System.out.println("[Test] OvChipKaartDAO.findAll() geeft de volgende Ovs:");
         List<OVChipkaart> kaarten = ovdao.findAll();
@@ -165,13 +169,13 @@ public class Main {
         OVChipkaart ovChipkaartTest1 = new OVChipkaart(46, java.sql.Date.valueOf(geldigTot), 2, 7.00, reizigerforOvChipKaartTest);
 //        ovdao.save(ovChipkaartTest1);
         OVChipkaart ovChipkaartTest2 = new OVChipkaart(47, java.sql.Date.valueOf(geldigTot), 2, 9.00, reizigerforOvChipKaartTest);
-        ovdao.save(ovChipkaartTest2);
+//        ovdao.save(ovChipkaartTest2);
         OVChipkaart ovChipkaartTest3 = new OVChipkaart(48, java.sql.Date.valueOf(geldigTot), 2, 10.00, reizigerforOvChipKaartTest);
 //        ovdao.save(ovChipkaartTest3);
 
         System.out.println("[Test] OvChipKaartDAO.delete():");
         System.out.println(kaarten.size() + " aantal ovkaarten voor het verwijderen\n");
-//        ovdao.delete(ovChipkaartTest2);
+        ovdao.delete(ovChipkaartTest);
         kaarten = ovdao.findAll();
         System.out.println(kaarten.size() + " aantal ovkaarten na het verwijderen\n");
         System.out.println();
@@ -179,14 +183,16 @@ public class Main {
         System.out.println("[Test] OvChipKaartDAO.findByReiziger() geeft de volgende reiziger en ovkaarten:");
         System.out.println(ovdao.findByReiziger(reizigerforOvChipKaartTest));
         System.out.println();
+
+        ovdao.save(ovChipkaartTest);
     }
 
     public static void main(String[] args) throws SQLException {
         ReizigerDAO rdao = new ReizigerDAOHibernate(sessionFactory);
         AdresDAO adao = new AdresDAOHibernate(sessionFactory);
         OVChipKaartDAO ovdao = new OVChipKaartDAOHibernate(sessionFactory);
-//        testReizigerDAO(rdao);
-//        testAdresDAO(adao, rdao);
+        testReizigerDAO(rdao);
+        testAdresDAO(adao, rdao);
         testOvChipKaartDAO(ovdao, rdao);
     }
 }
