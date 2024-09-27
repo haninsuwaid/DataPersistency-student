@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.sql.Date;
 
 @Entity
-@Table(name = "OVChipkaart")
+@Table(name = "ov_chipkaart")
 public class OVChipkaart {
     @Id
     @Column(name = "kaart_nummer")
