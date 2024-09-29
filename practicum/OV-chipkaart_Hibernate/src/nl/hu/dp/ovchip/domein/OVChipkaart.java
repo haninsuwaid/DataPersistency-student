@@ -3,6 +3,8 @@ import javax.persistence.*;
 import java.sql.Date;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ov_chipkaart")
@@ -24,6 +26,9 @@ public class OVChipkaart {
     @JoinColumn(name = "reiziger_id")
     private Reiziger reiziger;
 
+    @ManyToMany(mappedBy = "ovchipKaarten")
+    private Set<Product> producten = new HashSet<>();
+
     public OVChipkaart(int id, Date geldig_tot, int klasse, double saldo, Reiziger reiziger) {
         this.id = id;
         this.geldig_tot = geldig_tot;
@@ -34,6 +39,34 @@ public class OVChipkaart {
 
     public OVChipkaart() {
 
+    }
+
+    public Set<Product> getProducten() {
+        return producten;
+    }
+
+    public void setProducten(Set<Product> producten) {
+        this.producten = producten;
+    }
+
+    public Date getGeldig_tot() {
+        return geldig_tot;
+    }
+
+    public int getKlasse() {
+        return klasse;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public Reiziger getReiziger() {
+        return reiziger;
     }
 
     public void setId(int id) {

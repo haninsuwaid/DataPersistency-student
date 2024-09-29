@@ -1,11 +1,9 @@
 package nl.hu.dp.ovchip.domein;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.ArrayList;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Product")
@@ -20,12 +18,27 @@ public class Product {
     @Column(name = "beschrijving")
     public String beschrijving;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "ov_chipkaart_product",
+            joinColumns = { @JoinColumn(name = "product_nummer") },
+            inverseJoinColumns = { @JoinColumn(name = "kaart_nummer") }
+    )
+    Set<OVChipkaart> ovchipKaarten = new HashSet<>();
 
     public Product(int product_nummer, String name, Double prijs, String beschrijving) {
         this.product_nummer = product_nummer;
         this.name = name;
         this.prijs = prijs;
         this.beschrijving = beschrijving;
+    }
+
+    public Set<OVChipkaart> getOvChipkaarten() {
+        return ovchipKaarten;
+    }
+
+    public void setOvChipkaarten(Set<OVChipkaart> ovChipkaarten) {
+        this.ovchipKaarten = ovChipkaarten;
     }
 
     public Product() {

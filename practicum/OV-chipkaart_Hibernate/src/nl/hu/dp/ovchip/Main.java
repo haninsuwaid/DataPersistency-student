@@ -4,12 +4,16 @@ import nl.hu.dp.ovchip.DAO.*;
 
 import nl.hu.dp.ovchip.domein.Adres;
 import nl.hu.dp.ovchip.domein.OVChipkaart;
+import nl.hu.dp.ovchip.domein.Product;
 import nl.hu.dp.ovchip.domein.Reiziger;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Main {
 
@@ -187,12 +191,68 @@ public class Main {
         ovdao.save(ovChipkaartTest);
     }
 
+    /**
+     * P2. testProductDAO DAO: persistentie van een klasse
+     *
+     * Deze methode test de CRUD-functionaliteit van de testProductDAO DAO
+     *
+     * @throws SQLException
+     */
+    private static void testProductDAO (OVChipKaartDAO ovdao, ProductDAO pdao) throws SQLException {
+        System.out.println("\n---------- Test testProductDAO -------------");
+        Reiziger reizigerforOvChipKaartTest = new Reiziger(45, "L", "", "Momo", java.sql.Date.valueOf(gbdatum));
+
+        String geldigTot = "2025-03-14";
+        OVChipkaart ovChipkaartTest = new OVChipkaart(45, java.sql.Date.valueOf(geldigTot), 2, 5.00, reizigerforOvChipKaartTest);
+//        ovdao.save(ovChipkaartTest);
+        Product productTest = new Product(19, "studentenOv", 0.0, "Gratis reizen");
+        Set<OVChipkaart> kaarten = new HashSet<>();
+        kaarten.add(ovChipkaartTest);
+        productTest.setOvChipkaarten(kaarten);
+
+        System.out.println("[Test] ProductDAO.findAll() geeft de volgende produten:");
+        List<Product> products = pdao.findAll();
+        for (Product p : products) {
+            System.out.println(p);
+        }
+        System.out.println();
+
+        System.out.println("[Test] ProductDAO.findByOvkaart() geeft de volgende:");
+        List<Product> productList = pdao.findByOVChipkaart(ovChipkaartTest);
+        for (Product p : productList) {
+            System.out.println(p);
+        }
+        System.out.println();
+
+        System.out.println("[Test] ProductDAO.update() doet het volgende:");
+        System.out.println("Product voor het aanpassen van de gegevens " + productTest);
+        productTest.setName("Nieuwe_naam");
+        productTest.setBeschrijving("Niet meer gratis");
+        pdao.update(productTest);
+        System.out.println("Product na het aanpassen van de gegevens " + productTest);
+        System.out.println();
+
+        System.out.println("[Test] ProductDAO.delete():");
+        System.out.println(products.size() + " aantal products voor het verwijderen\n");
+        pdao.delete(productTest);
+        products = pdao.findAll();
+        System.out.println(products.size() + " aantal products na het verwijderen\n");
+        System.out.println();
+
+        pdao.save(productTest);
+
+    }
+
+
     public static void main(String[] args) throws SQLException {
         ReizigerDAO rdao = new ReizigerDAOHibernate(sessionFactory);
         AdresDAO adao = new AdresDAOHibernate(sessionFactory);
         OVChipKaartDAO ovdao = new OVChipKaartDAOHibernate(sessionFactory);
-        testReizigerDAO(rdao);
-        testAdresDAO(adao, rdao);
-        testOvChipKaartDAO(ovdao, rdao);
+        ProductDAO pdao = new ProductDAOHibernate(sessionFactory);
+//        testReizigerDAO(rdao);
+//        testAdresDAO(adao, rdao);
+//        testOvChipKaartDAO(ovdao, rdao);
+        testProductDAO(ovdao, pdao);
+
     }
 }
